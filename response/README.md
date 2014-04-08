@@ -1,5 +1,4 @@
 # Response Encoder
-=================
 
 A [martini](http://github.com/go-martini/martini) Middleware to encode returned values from handlers (not encode values in the handler itself)
 
