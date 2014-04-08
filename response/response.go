@@ -38,7 +38,8 @@ func NewEncoder() martini.Handler {
 		wrappedWriter := newWrappedResponseWriter(w)
 		c.MapTo(wrappedWriter, (*http.ResponseWriter)(nil))
 
-		returnHandler := func(ctx martini.Context, vals []reflect.Value) {
+		var rtnHandler martini.ReturnHandler
+		rtnHandler = func(ctx martini.Context, vals []reflect.Value) {
 			rv := ctx.Get(inject.InterfaceOf((*http.ResponseWriter)(nil)))
 			res := rv.Interface().(http.ResponseWriter)
 			var responseVal reflect.Value
@@ -69,7 +70,7 @@ func NewEncoder() martini.Handler {
 				res.Write([]byte(responseVal.String()))
 			}
 		}
-		c.MapTo(returnHandler, (*martini.ReturnHandler)(nil))
+		c.Map(rtnHandler)
 	}
 }
 
