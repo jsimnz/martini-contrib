@@ -1,11 +1,11 @@
-Response Encoder
-################
+# Response Encoder
+=================
 
 A [martini](http://github.com/go-martini/martini) Middleware to encode returned values from handlers (not encode values in the handler itself)
 
 ### Why not use martini-contrib/encoder or render?
 
-Both [martini-contrib](http://github.com/martini-contrib)/[encoder](http://github.com/martini-contrib/encoder) and [render](http://github.com/martini-contrib/render) require to encoder your data **in**  your handler. This approach is great, however if you needed to call a handler from another handler ie FindUser handler needs to call FindUserFollowers, it can be challenge because the response is already written to the http.ResponseWriter buffer which is an unexported field.
+Both [martini-contrib](http://github.com/martini-contrib)/[encoder](http://github.com/martini-contrib/encoder) and [render](http://github.com/martini-contrib/render) require you to encoder your data **in**  your handler. This approach is great, however if you needed to call a handler from another handler ie FindUser handler needs to call FindUserFollowers, it can be challenge because the response is already written to the http.ResponseWriter buffer which is an unexported field.
 
 A possible solution using the above example is to just call FindUserFriends from your FindUser handler but the returned value is already encoded so you must deocde before getting access to its contents. This adds A) overhead and B) more code
 
