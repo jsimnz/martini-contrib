@@ -4,9 +4,9 @@ A [martini](http://github.com/go-martini/martini) Middleware to encode returned 
 
 ### Why not use martini-contrib/encoder or render?
 
-Both [martini-contrib](http://github.com/martini-contrib)/[encoder](http://github.com/martini-contrib/encoder) and [render](http://github.com/martini-contrib/render) require you to encoder your data **in**  your handler. This approach is great, however if you needed to call a handler from another handler ie FindUser handler needs to call FindUserFollowers, it can be challenge because the response is already written to the http.ResponseWriter buffer which is an unexported field.
+Both [martini-contrib](http://github.com/martini-contrib)/[encoder](http://github.com/martini-contrib/encoder) and [render](http://github.com/martini-contrib/render) require you to encoder your data **in**  your handler. This approach is great, however if you needed to call a handler from another handler ie FindUser handler needs to call FindUserFollowers, it can be ahallenging because the response is already written to the http.ResponseWriter buffer which is an unexported field.
 
-A possible solution using the above example is to just call FindUserFriends from your FindUser handler but the returned value is already encoded so you must deocde before getting access to its contents. This adds A) overhead and B) more code
+A possible solution (using the above example) is to just call FindUserFriends from your FindUser handler but the returned value is already encoded so you must deocde before getting access to its contents. This adds A) overhead and B) more code
 
 An ideal solution would be to be able to call FindUserFriends and recieve un encoded data. This is what this response encoder does.
 
@@ -21,9 +21,7 @@ You can return your struct or []struct like you normally would in a function, an
 
 ### Usage
 
-It currently requires you to be using the [encoder](http://github.com/martini-contrib/encoder) middleware which is easy to get running.
-
-And works with the generic martini handler structure.
+It currently requires you to be using the [encoder](http://github.com/martini-contrib/encoder) middleware which is easy to get running, And works with the generic martini handler structure.
 
 This is a over simplified example, but understand how the return values from handlers work
 
@@ -132,6 +130,7 @@ JSON Ex.
 	"error": 400				// Whatever error code is returned or grabbed the ResponseWriter
 	"message": "Bad Request"	// The associated status text from http.StatusText(code)
 }
+```
 
 However a more idomatic method would be to, instead of return `nil`, return your own error struct along with an error code. This gives you full control of what is returned when an error happens.
 
