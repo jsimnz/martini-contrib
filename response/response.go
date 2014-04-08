@@ -1,9 +1,12 @@
 package response
 
 import (
+	"encoding/xml"
+	"errors"
 	"net/http"
 	"reflect"
 
+	"github.com/codegangsta/inject"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/encoder"
 )
