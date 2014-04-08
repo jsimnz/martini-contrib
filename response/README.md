@@ -160,7 +160,7 @@ func friendsHandler(params martini.Params) (int, interface{}) {
 	
 	... same as original definition ...
 	if err != nil {
-		return 400, ErrorJSON{400, "Some error message"}
+		return 400, HTTPError{400, "Some error message"}
 	}
 
 	return 200, friends
@@ -171,9 +171,9 @@ func friendsHandler(params martini.Params) (int, interface{}) {
 
 If you use `response.NewEncoder()` as a middleware to encode returned values from handlers, then you need to keep note the following things.
 
-	1. It replaces the default `martini.ReturnHandler`, so this package won't work if another middleware also replaces the default `martini.ReturnHandler`
+1. It replaces the default `martini.ReturnHandler`, so this package won't work if another middleware also replaces the default `martini.ReturnHandler`
 
-	2. It wraps the http.ResponseWriter, so if another middleware also wraps the http.ResponseWriter be careful.
+2. It wraps the http.ResponseWriter, so if another middleware also wraps the http.ResponseWriter be careful.
 
 ### TODO
 - Write tests
