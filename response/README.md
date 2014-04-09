@@ -177,6 +177,7 @@ If you use `response.NewEncoder()` as a middleware to encode returned values fro
 
 ### TODO
 - ~~Write tests~~
+- Write more tests
 - Write examples
 
 ### LICENSE 
