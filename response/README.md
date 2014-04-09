@@ -176,7 +176,8 @@ If you use `response.NewEncoder()` as a middleware to encode returned values fro
 2. It wraps the http.ResponseWriter, so if another middleware also wraps the http.ResponseWriter be careful.
 
 ### TODO
-- Write tests
+- ~~Write tests~~
+- Write examples
 
 ### LICENSE 
 ```
