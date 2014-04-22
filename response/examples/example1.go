@@ -6,7 +6,6 @@ import (
 
 	"github.com/go-martini/martini"
 	"github.com/jsimnz/martini-contrib/response"
-	"github.com/martini-contrib/encoder"
 )
 
 type User struct {
@@ -32,11 +31,6 @@ func init() {
 
 func main() {
 	m := martini.Classic()
-
-	m.Use(func(c martini.Context, w http.ResponseWriter) {
-		c.MapTo(encoder.JsonEncoder{}, (*encoder.Encoder)(nil))
-		w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	})
 
 	m.Use(response.NewEncoder())
 

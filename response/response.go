@@ -37,6 +37,7 @@ func NewEncoder() martini.Handler {
 	return func(c martini.Context, w http.ResponseWriter) {
 		wrappedWriter := newWrappedResponseWriter(w)
 		c.MapTo(wrappedWriter, (*http.ResponseWriter)(nil))
+		c.MapTo(encoder.JsonEncoder{}, (*encoder.Encoder)(nil))
 
 		var rtnHandler martini.ReturnHandler
 		rtnHandler = func(ctx martini.Context, vals []reflect.Value) {
@@ -65,6 +66,7 @@ func NewEncoder() martini.Handler {
 			} else if isStruct(responseVal) || isStructSlice(responseVal) {
 				encv := ctx.Get(inject.InterfaceOf((*encoder.Encoder)(nil)))
 				enc := encv.Interface().(encoder.Encoder)
+				res.Header().Set("Content-Type", "application/json; charset=utf-8")
 				res.Write(encoder.Must(enc.Encode(responseVal.Interface())))
 			} else {
 				res.Write([]byte(responseVal.String()))
