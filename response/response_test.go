@@ -3,6 +3,7 @@ package response
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -101,6 +102,20 @@ func TestMultiCallingHandler(t *testing.T) {
 	}
 	if usr.Friend != "Zach" {
 		t.Fatal("Expected friend name Zach, Got:", usr.Friend)
+	}
+}
+
+func Test404NotFound(t *testing.T) {
+	m := setupMartini()
+
+	w, r := setupHttpTester("GET", "/friend")
+	m.ServeHTTP(w, r)
+
+	resp, err := ioutil.ReadAll(w.Body)
+	if err != nil {
+		t.Fail()
+	} else if string(resp) != "404 page not found\n" {
+		t.Fatalf("Expected %v, Got: %v", []byte("404 page not found"), resp)
 	}
 }
 

@@ -23,7 +23,7 @@ func newWrappedResponseWriter(w http.ResponseWriter) *wrappedResponseWriter {
 }
 
 func (wr *wrappedResponseWriter) WriteHeader(code int) {
-	wr.WriteHeader(code)
+	wr.ResponseWriter.WriteHeader(code)
 	wr.statusCode = code
 }
 
