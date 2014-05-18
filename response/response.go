@@ -1,6 +1,8 @@
 package response
 
 import (
+	"bytes"
+	"encoding/json"
 	"encoding/xml"
 	"errors"
 	"net/http"
@@ -33,7 +35,12 @@ type errorResponse struct {
 	Message string   `json:"message" xml:"message"`
 }
 
-func NewEncoder() martini.Handler {
+type Options struct {
+	Html   bool
+	Indent bool
+}
+
+func NewEncoder(opts ...Options) martini.Handler {
 	return func(c martini.Context, w http.ResponseWriter) {
 		wrappedWriter := newWrappedResponseWriter(w)
 		c.MapTo(wrappedWriter, (*http.ResponseWriter)(nil))
@@ -67,7 +74,20 @@ func NewEncoder() martini.Handler {
 				encv := ctx.Get(inject.InterfaceOf((*encoder.Encoder)(nil)))
 				enc := encv.Interface().(encoder.Encoder)
 				res.Header().Set("Content-Type", "application/json; charset=utf-8")
-				res.Write(encoder.Must(enc.Encode(responseVal.Interface())))
+				buf := bytes.NewBuffer(encoder.Must(enc.Encode(responseVal.Interface())))
+				if len(opts) > 0 {
+					if opts[0].Html {
+						val := buf.Bytes()
+						buf.Reset()
+						json.HTMLEscape(buf, val)
+					}
+					if opts[0].Indent {
+						val := buf.Bytes()
+						buf.Reset()
+						json.Indent(buf, val, "", "\t")
+					}
+				}
+				res.Write(buf.Bytes())
 			} else {
 				res.Write([]byte(responseVal.String()))
 			}
