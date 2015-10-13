@@ -14,13 +14,13 @@ import (
 )
 
 type wrappedResponseWriter struct {
-	http.ResponseWriter
+	martini.ResponseWriter
 
 	statusCode int
 }
 
 func newWrappedResponseWriter(w http.ResponseWriter) *wrappedResponseWriter {
-	wr := &wrappedResponseWriter{ResponseWriter: w}
+	wr := &wrappedResponseWriter{ResponseWriter: martini.NewResponseWriter(w)}
 	return wr
 }
 
