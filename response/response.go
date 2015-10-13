@@ -44,7 +44,7 @@ func NewEncoder(opts ...Options) martini.Handler {
 	return func(c martini.Context, w http.ResponseWriter) {
 		wrappedWriter := newWrappedResponseWriter(w)
 		c.MapTo(wrappedWriter, (*http.ResponseWriter)(nil))
-		c.MapTo(encoder.JsonEncoder{}, (*encoder.Encoder)(nil))
+		c.MapTo(encoder.JsonEncoder{PrettyPrint: true}, (*encoder.Encoder)(nil))
 
 		var rtnHandler martini.ReturnHandler
 		rtnHandler = func(ctx martini.Context, vals []reflect.Value) {
